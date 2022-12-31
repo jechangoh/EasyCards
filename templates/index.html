@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Flashcards {% endblock %}</h1>
+    <form action="/flashcards" method="POST">
+        <input autocomplete="off" name="word" placeholder="Word" type="text">
+        <input autocomplete="off" name="description" placeholder="Description" type="text">
+        <input type="submit" value="Create">
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Word</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for card in cards %}
+                <tr>
+                    <td>{{ card["word"] }}</td>
+                    <td>{{ card["description"] }}</td>
+                    <td>
+                        <form action="/remove" method="POST">
+                            <input name="id" type="hidden" value="{{ card.id }}">
+                            <input type="submit" value="Remove">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
