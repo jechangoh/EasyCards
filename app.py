@@ -28,7 +28,7 @@ def index():
         conn.close()
         return render_template("index.html", cards=cards)
     
-    return render_template("indexs.html")
+    return render_template("index.html")
     
 
 @app.route('/flashcards', methods=["POST"])
