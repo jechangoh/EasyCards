@@ -69,3 +69,23 @@ def remove():
         conn.close()
     
     return redirect("/")
+
+
+@app.route("/delete", methods=["POST"])
+def delete():
+    conn = sqlite3.connect("flashcards.db")
+
+    with open("schema.sql") as f:
+        conn.executescript(f.read())
+
+    cur = conn.cursor()
+
+    count = cur.execute("SELECT COUNT(*) FROM cards")
+
+    if count != 0:
+        cur.execute("DELETE FROM cards")
+        conn.commit()
+        conn.close()
+
+    return redirect("/")
+    
