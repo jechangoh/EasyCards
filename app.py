@@ -13,10 +13,23 @@ def db_connection():
 @app.route('/')
 def index():
     conn = db_connection()
-    cards = conn.execute("SELECT * FROM cards").fetchall()
-    conn.close()
-    return render_template("index.html", cards=cards)
 
+    conn2 = sqlite3.connect("flashcards.db")
+
+    with open("schema.sql") as f:
+        conn2.executescript(f.read())
+
+    cur = conn2.cursor()
+
+    count = cur.execute("SELECT COUNT(*) FROM cards")
+
+    if count != 0:
+        cards = conn.execute("SELECT * FROM cards").fetchall()
+        conn.close()
+        return render_template("index.html", cards=cards)
+    
+    return render_template("indexs.html")
+    
 
 @app.route('/flashcards', methods=["POST"])
 def flashcards():
@@ -36,5 +49,23 @@ def flashcards():
 
     conn.commit()
     conn.close()
+    
+    return redirect("/")
+
+
+@app.route("/remove", methods=["POST"])
+def remove():
+    conn = sqlite3.connect("flashcards.db")
+
+    with open("schema.sql") as f:
+        conn.executescript(f.read())
+
+    cur = conn.cursor()
+
+    card = request.form.get("id")
+    if card:
+        cur.execute("DELETE FROM cards WHERE id = ?", card)
+        conn.commit()
+        conn.close()
     
     return redirect("/")
