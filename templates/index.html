@@ -21,7 +21,7 @@
         <tbody>
             {% for card in cards %}
                 <tr>
-                    <td>{{ card["word"] }}</td>
+                    <td style="font-weight: bold;">{{ card["word"] }}</td>
                     <td>{{ card["description"] }}</td>
                     <td>
                         <form action="/remove" method="POST">
