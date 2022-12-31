@@ -11,6 +11,9 @@
         <form action="/delete" method="POST" id="del">
             <input type="submit" value="Delete All">
         </form>
+        <form action="/list" method="POST" id="del">
+            <input type="submit" value="See Memorized List">
+        </form>
     </div>
     
     <table>
@@ -26,6 +29,12 @@
                 <tr>
                     <td style="font-weight: bold;">{{ card["word"] }}</td>
                     <td>{{ card["description"] }}</td>
+                    <td>
+                        <form action="/memorized" method="POST">
+                            <input name="id-2" type="hidden" value="{{ card.word }}">
+                            <input type="submit" value="Memorized">
+                        </form>
+                    </td>
                     <td>
                         <form action="/remove" method="POST">
                             <input name="id" type="hidden" value="{{ card.id }}">
