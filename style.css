@@ -2,3 +2,24 @@ h1 {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 50px;
 }
+
+h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.error-btn {
+    margin-top: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 15px;
+    border-radius: 20px;
+    background-color: white;
+    cursor: pointer;
+    border: 3px solid black;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
