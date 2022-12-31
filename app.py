@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
 
+import word_queue
+
 app = Flask(__name__)
 
 
@@ -9,6 +11,8 @@ def db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+
+words = word_queue.Queue()
 
 @app.route('/')
 def index():
@@ -88,4 +92,30 @@ def delete():
         conn.close()
 
     return redirect("/")
-    
+
+
+@app.route("/memorized", methods=["POST"])
+def memorized():
+    word = request.form.get("id-2")
+
+    if word not in words._items:
+        words.enqueue(word)
+
+    return redirect("/")
+
+
+@app.route("/list", methods=["POST"])
+def list():
+    num = len(words._items)
+
+    conn = sqlite3.connect("flashcards.db")
+
+    with open("schema.sql") as f:
+        conn.executescript(f.read())
+
+    cur = conn.cursor()
+
+    cur.execute("SELECT COUNT (*) FROM cards")
+    total = cur.fetchone()[0]
+
+    return render_template("memorized.html", words=words, num=num, total=total)
