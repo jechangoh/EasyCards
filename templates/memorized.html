@@ -4,9 +4,9 @@
     <h2>Memorized List</h2>
     <h4>{{ num }} out of {{ total }} words memorized</h4>
         {% for _ in range(0, num) %}
-            <ol>
+            <ul>
                 <li>{{ words.dequeue() }}</li>
-            </ol>
+            </ul>
         {% endfor %}
     <a href="/"><button class="error-btn">Go back</button></a>
 {% endblock %}
