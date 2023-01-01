@@ -23,6 +23,7 @@ h1 {
 
 #del {
     margin-top: 15px;
+    display: inline-block;
 }
 
 .form, table {
