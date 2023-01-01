@@ -11,8 +11,8 @@ def db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-
 words = word_queue.Queue()
+
 
 @app.route('/')
 def index():
@@ -20,7 +20,28 @@ def index():
 
     conn2 = sqlite3.connect("flashcards.db")
 
-    with open("schema.sql") as f:
+    with open("cards.sql") as f:
+        conn2.executescript(f.read())
+
+    cur = conn2.cursor()
+
+    count = cur.execute("SELECT COUNT(*) FROM cards")
+
+    if count != 0:
+        cards = conn.execute("SELECT word FROM cards").fetchall()
+        conn.close()
+        return render_template("index.html", cards=cards)
+    
+    return render_template("index.html")
+
+
+@app.route('/answer', methods=["POST"])
+def answers():
+    conn = db_connection()
+
+    conn2 = sqlite3.connect("flashcards.db")
+
+    with open("cards.sql") as f:
         conn2.executescript(f.read())
 
     cur = conn2.cursor()
@@ -44,7 +65,7 @@ def flashcards():
 
     conn = sqlite3.connect("flashcards.db")
 
-    with open("schema.sql") as f:
+    with open("cards.sql") as f:
         conn.executescript(f.read())
 
     cur = conn.cursor()
@@ -61,7 +82,7 @@ def flashcards():
 def remove():
     conn = sqlite3.connect("flashcards.db")
 
-    with open("schema.sql") as f:
+    with open("cards.sql") as f:
         conn.executescript(f.read())
 
     cur = conn.cursor()
@@ -79,7 +100,7 @@ def remove():
 def delete():
     conn = sqlite3.connect("flashcards.db")
 
-    with open("schema.sql") as f:
+    with open("cards.sql") as f:
         conn.executescript(f.read())
 
     cur = conn.cursor()
@@ -110,7 +131,7 @@ def list():
 
     conn = sqlite3.connect("flashcards.db")
 
-    with open("schema.sql") as f:
+    with open("cards.sql") as f:
         conn.executescript(f.read())
 
     cur = conn.cursor()
